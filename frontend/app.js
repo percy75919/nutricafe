@@ -116,7 +116,7 @@ function displayMenuItems(items, containerId, title) {
 
 async function fetchRecommendedItems(token) {
     try {
-        const res = await fetch('http://localhost:5000/menu/recommended', {
+        const res = await fetch('https://nutricafe-1.onrender.com/menu/recommended', {
             method: 'GET',
             headers: { 'x-auth-token': token }
         });

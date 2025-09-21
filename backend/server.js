@@ -3,12 +3,21 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+//... inside server.js
+
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors());
+// --- THIS IS THE FIX ---
+const corsOptions = {
+    origin: 'https://nutricafe.netlify.app' // Your live frontend URL
+};
+app.use(cors(corsOptions));
+// --- END OF FIX ---
+
 app.use(express.json()); // Allows us to parse JSON
+
+//... rest of the file
 
 // --- Database Connection ---
 const uri = process.env.ATLAS_URI; // We will set this up later

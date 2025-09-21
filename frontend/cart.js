@@ -59,7 +59,7 @@ async function placeOrder() {
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     try {
-        const res = await fetch('http://localhost:5000/orders/add', {
+        const res = await fetch('https://nutricafe-1.onrender.com/orders/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
