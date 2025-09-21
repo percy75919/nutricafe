@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NutriCafé</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .form-container { max-width: 400px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .form-container h2 { text-align: center; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; }
+        .form-group input { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+        .btn { display: block; width: 100%; padding: 0.75rem; background-color: #4CAF50; color: white; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; }
+        .btn:hover { background-color: #45a049; }
+        #msg { text-align: center; color: red; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <header><h1>NutriCafé Login</h1></header>
+    <main>
+        <div class="form-container">
+            <form id="login-form">
+                <h2>Welcome Back!</h2>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <p id="msg"></p>
+            <p style="text-align: center; margin-top: 1rem;">
+                Don't have an account? <a href="register.html">Register now</a>
+            </p>
+        </div>
+    </main>
+    <script src="auth.js"></script>
+</body>
+</html>
