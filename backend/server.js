@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 
 // --- THIS IS THE FIX ---
 const corsOptions = {
-    origin: 'https://nutricafe.netlify.app' // Your live frontend URL
+    origin: 'https://your-new-vercel-url.vercel.app' // Your live frontend URL
 };
 app.use(cors(corsOptions));
 // --- END OF FIX ---
