@@ -21,6 +21,9 @@ const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 })
+// Add this with your other routes in server.js
+const aiRouter = require('./routes/ai');
+app.use('/ai', aiRouter);
 
 // --- API Routes ---
 const menuRouter = require('./routes/menu');

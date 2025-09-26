@@ -4,6 +4,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,6 +24,24 @@
     
 
 <main>
+<div class="chat-container">
+    <div class="chat-header">
+        <h3>AI Nutritionist</h3>
+        <button class="chat-close-btn" id="chat-close-btn">&times;</button>
+    </div>
+    <div class="chat-box" id="chat-box">
+        <div class="chat-message ai">Hello! How can I help you with your nutrition goals today?</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask me anything...">
+        <button id="send-chat-btn">Send</button>
+    </div>
+</div>
+
+<button class="ai-fab" id="ai-fab">
+    <i class="fa-solid fa-robot"></i>
+</button>
+
     <div class="search-container">
         <input type="text" id="search-bar" placeholder="Search for food...">
     </div>
@@ -34,5 +53,7 @@
     </footer>
 
     <script src="app.js"></script>
+    <script src="chat.js"></script> 
+    
 </body>
 </html>
