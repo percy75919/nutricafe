@@ -17,7 +17,7 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     background-color: var(--light-color);
     color: var(--dark-color);
     line-height: 1.6;
@@ -233,6 +233,80 @@ main {
     header h1 {
         font-size: 1.8rem;
     }
+}
+
+/* Styling for the cart item actions */
+.cart-item {
+    justify-content: space-between; /* Pushes action items to the right */
+}
+
+.item-actions {
+    text-align: right;
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #c0392b; /* A red color */
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+.btn-remove:hover {
+    text-decoration: underline;
+}
+
+/* Styling for the new quantity selector */
+.card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.quantity-input {
+    width: 60px;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-size: 1rem;
+}
+
+.card-actions .btn-add-to-cart {
+    margin-top: 0; /* Remove the top margin since it's now in a flex container */
+    flex-grow: 1; /* Allows the button to fill the remaining space */
+}
+
+/* Styling for the new quantity controls in the cart */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.quantity-controls span {
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+.btn-quantity {
+    background-color: var(--light-color);
+    border: 1px solid #bdc3c7;
+    border-radius: 50%; /* Makes it a circle */
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    line-height: 1; /* Helps center the text vertically */
+    transition: background-color 0.2s;
+}
+
+.btn-quantity:hover {
+    background-color: #bdc3c7;
 }
 /* --- Forms (Login/Register) --- */
 .form-container { max-width: 400px; margin: 2rem auto; padding: 2rem; background: var(--white-color); border-radius: var(--border-radius); box-shadow: var(--shadow); }

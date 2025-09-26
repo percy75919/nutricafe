@@ -40,23 +40,7 @@ if (searchBar) {
     updateCartCount();
 });
 
-// --- CART FUNCTIONALITY ---
-function addToCart(item) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Check if item already exists in cart
-    const existingItem = cart.find(cartItem => cartItem._id === item._id);
 
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({ ...item, quantity: 1 });
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartCount();
-    alert(`${item.name} added to cart!`);
-}
 
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -67,7 +51,7 @@ function updateCartCount() {
     }
 }
 
-// --- DISPLAY FUNCTION (MODIFIED) ---
+// --- UPDATED DISPLAY FUNCTION ---
 function displayMenuItems(items, containerId, title) {
     const container = document.getElementById(containerId);
     container.innerHTML = `<h2>${title}</h2>`;
@@ -84,7 +68,6 @@ function displayMenuItems(items, containerId, title) {
         const card = document.createElement('div');
         card.className = 'menu-card';
         
-        // --- THIS SECTION IS UPDATED ---
         card.innerHTML = `
             <img src="${item.imageUrl}" alt="${item.name}">
             <div class="card-content">
@@ -103,36 +86,61 @@ function displayMenuItems(items, containerId, title) {
                     <span>Fat: ${(item.nutrition && item.nutrition.fat) || 'N/A'}</span>
                 </div>
                 <p class="price">₹${item.price.toFixed(2)}</p>
-                <button class="btn-add-to-cart">Add to Cart</button>
+
+                <div class="card-actions">
+                    <input type="number" class="quantity-input" value="1" min="1" max="10">
+                    <button class="btn-add-to-cart">Add to Cart</button>
+                </div>
             </div>
         `;
-        // --- END OF UPDATED SECTION ---
 
-        card.querySelector('.btn-add-to-cart').addEventListener('click', () => addToCart(item));
+        // Update event listener to get the quantity
+        card.querySelector('.btn-add-to-cart').addEventListener('click', () => {
+            const quantity = parseInt(card.querySelector('.quantity-input').value, 10);
+            addToCart(item, quantity);
+        });
+        
         grid.appendChild(card);
     });
     container.appendChild(grid);
 }
 
-async function fetchRecommendedItems(token) {
-    try {
-        const res = await fetch('https://nutricafe-1.onrender.com/menu/recommended', {
-            method: 'GET',
-            headers: { 'x-auth-token': token }
-        });
-        if (!res.ok) throw new Error('Could not fetch recommendations');
-        const recommendedItems = await res.json();
-        displayMenuItems(recommendedItems, 'menu-container', 'Recommended For You');
+// --- UPDATED CART FUNCTION ---
+function addToCart(item, quantity = 1) { // Now accepts a quantity
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    const existingItem = cart.find(cartItem => cartItem._id === item._id);
 
-        // You could also fetch and display all items below the recommended ones
-    } catch (error) {
-        console.error(error);
-        // If token is invalid or expired, log out user and fetch all items
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
-        fetchAllItems();
+    if (existingItem) {
+        existingItem.quantity += quantity; // Add the specified quantity
+    } else {
+        cart.push({ ...item, quantity: quantity });
     }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    alert(`${quantity} plate(s) of ${item.name} added to cart!`);
 }
+
+    async function fetchRecommendedItems(token) {
+        try {
+            const res = await fetch('http://localhost:5000/menu/recommended', {
+                method: 'GET',
+                headers: { 'x-auth-token': token }
+            });
+            if (!res.ok) throw new Error('Could not fetch recommendations');
+            const recommendedItems = await res.json();
+            displayMenuItems(recommendedItems, 'menu-container', 'Recommended For You');
+
+            // You could also fetch and display all items below the recommended ones
+        } catch (error) {
+            console.error(error);
+            // If token is invalid or expired, log out user and fetch all items
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            fetchAllItems();
+        }
+    }
 
 async function fetchAllItems() {
     try {

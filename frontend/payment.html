@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Payment - NutriCafé</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header><h1>Secure Payment</h1></header>
+    <main>
+        <div class="form-container" id="payment-form-container">
+            <h2>Enter Card Details</h2>
+            <form id="payment-form">
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" placeholder="1234 5678 9101 1121" required>
+                </div>
+                <div class="form-group">
+                    <label for="expiry">Expiry Date</label>
+                    <input type="text" id="expiry" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" placeholder="123" required>
+                </div>
+                <button type="submit" class="btn">Pay Now</button>
+            </form>
+        </div>
+
+        <div id="success-message" style="text-align: center; display: none;">
+            <h2>✅ Payment Successful!</h2>
+            <p>Your order is confirmed and will be ready for pickup shortly.</p>
+            <a href="index.html" class="btn" style="max-width: 200px; margin: 1rem auto;">Back to Menu</a>
+        </div>
+    </main>
+    <script src="payment.js"></script>
+</body>
+</html>

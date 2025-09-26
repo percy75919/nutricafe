@@ -22,14 +22,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const itemEl = document.createElement('div');
             itemEl.className = 'cart-item';
+            
+            // --- UPDATED HTML with Quantity Controls ---
             itemEl.innerHTML = `
                 <img src="${item.imageUrl}" alt="${item.name}">
                 <div class="item-details">
                     <h4>${item.name}</h4>
                     <p>Price: ₹${item.price.toFixed(2)}</p>
-                    <p>Quantity: ${item.quantity}</p>
+                    <div class="quantity-controls">
+                        <button class="btn-quantity" data-id="${item._id}" data-change="-1">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="btn-quantity" data-id="${item._id}" data-change="1">+</button>
+                    </div>
                 </div>
-                <p class="item-total">₹${itemTotal.toFixed(2)}</p>
+                <div class="item-actions">
+                    <p class="item-total">₹${itemTotal.toFixed(2)}</p>
+                    <button class="btn-remove" data-id="${item._id}">Remove</button>
+                </div>
             `;
             cartItemsContainer.appendChild(itemEl);
         });
@@ -37,7 +46,44 @@ document.addEventListener('DOMContentLoaded', () => {
         totalPriceEl.textContent = `₹${total.toFixed(2)}`;
     }
 
-// Replace the entire placeOrder function with this improved version
+    // --- NEW FUNCTION to update quantity ---
+    function updateQuantity(itemId, change) {
+        const itemIndex = cart.findIndex(item => item._id === itemId);
+        if (itemIndex > -1) {
+            cart[itemIndex].quantity += change;
+            // If quantity drops to 0 or less, remove the item
+            if (cart[itemIndex].quantity <= 0) {
+                cart.splice(itemIndex, 1);
+            }
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+        updateCartCount();
+    }
+
+    function removeFromCart(itemId) {
+        cart = cart.filter(item => item._id !== itemId);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCart();
+        updateCartCount();
+    }
+    
+    // Updated Event listener to handle quantity and remove buttons
+    cartItemsContainer.addEventListener('click', (e) => {
+        const target = e.target;
+        const itemId = target.getAttribute('data-id');
+
+        if (target.classList.contains('btn-remove')) {
+            removeFromCart(itemId);
+        }
+
+        if (target.classList.contains('btn-quantity')) {
+            const change = parseInt(target.getAttribute('data-change'), 10);
+            updateQuantity(itemId, change);
+        }
+    });
+
+// Replace the old placeOrder function in cart.js
 
 async function placeOrder() {
     const token = localStorage.getItem('authToken');
@@ -59,7 +105,7 @@ async function placeOrder() {
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     try {
-        const res = await fetch('https://nutricafe-1.onrender.com/orders/add', {
+        const res = await fetch('http://localhost:5000/orders/add', { // Make sure this URL is correct for your setup (live or local)
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,29 +114,23 @@ async function placeOrder() {
             body: JSON.stringify({ items: orderItems, totalAmount: totalAmount })
         });
 
-        // The important change is here!
         if (!res.ok) {
-            if (res.status === 401) { // 401 means "Unauthorized"
+            if (res.status === 401) {
                 throw new Error('Your session has expired. Please log in again.');
             }
             const errorData = await res.json();
             throw new Error(errorData.msg || 'Failed to place order.');
         }
         
-        const data = await res.json();
-
-        cartMsg.style.color = 'green';
-        cartMsg.textContent = 'Order placed successfully! Redirecting...';
-        
-        localStorage.removeItem('cart');
-        updateCartCount(); // Make sure cart display is updated elsewhere
-        setTimeout(() => window.location.href = 'index.html', 2000);
+        // --- THIS IS THE CHANGE ---
+        // Instead of showing a message, redirect to the payment page
+        window.location.href = 'payment.html';
+        // --- END OF CHANGE ---
 
     } catch (error) {
         cartMsg.style.color = 'red';
         cartMsg.textContent = error.message;
 
-        // If it was an auth error, clear the bad token and redirect
         if (error.message.includes("session has expired")) {
             localStorage.removeItem('authToken');
             localStorage.removeItem('user');
@@ -98,7 +138,6 @@ async function placeOrder() {
         }
     }
 }
-
 // You also need a simple updateCartCount function in this file for the logic above
 function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
